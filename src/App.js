@@ -8,23 +8,27 @@ function App() {
     const [loading, setLoading] = useState(true);
     const [tours, setTours] = useState([]);
 
+    const removeTour = (id) => {
+        const newTours = tours.filter((tour) => tour.id !== id);
+        setTours(newTours);
+    };
+
     const fetchTours = async () => {
         setLoading(true);
         try {
-          const response = await fetch(url);
-          const tours = await response.json();
-          setLoading(false);
-          setTours(tours);
+            const response = await fetch(url);
+            const tours = await response.json();
+            setLoading(false);
+            setTours(tours);
         } catch (error) {
-          setLoading(false);
-          console.log(error);
-          
+            setLoading(false);
+            console.log(error);
         }
     };
 
-    useEffect(()=>{
-      fetchTours();
-    },[])
+    useEffect(() => {
+        fetchTours();
+    }, []);
 
     if (loading) {
         return (
@@ -35,7 +39,7 @@ function App() {
     }
     return (
         <main>
-            <Tours tours={tours}/>
+            <Tours tours={tours} removeTour={removeTour}/>
         </main>
     );
 }
